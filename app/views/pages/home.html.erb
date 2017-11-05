@@ -8,53 +8,31 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Korbit Transactions</a>
+      <%= link_to 'Korbit Transactions', root_path, class: "navbar-brand" %>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+
+      <%= form_tag('/', method: 'POST', class: "navbar-form navbar-left") do %>
+        <label for="transaction_count">Transaction Count:</label>
+        <div class="form-group" style="margin-right: 15px;">
+          <%= select("data", "transaction_count", @transaction_counts, selected: 50) %>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+        <label for="time_interval">Time Interval:</label>
+        <div class="form-group">
+          <%= select("data", "time_interval", @time_intervals, selected: @time_interval) %>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      <% end %>
+
+    </div>
+  </div>
 </nav>
 
 <div class="container">
   <% if @recent_transactions.any? %>
-    <div lass="row">
+    <div class="row">
       <div class="col-xs-12">
         <div class="well">Transactions available from <%= DateTime.strptime(@first_transaction.unix_time.to_s, '%s').strftime('%F') %> to <%= DateTime.strptime(@last_transaction.unix_time.to_s, '%s').strftime('%F') %> (<%= @transaction_count %> total transactions)</div>
       </div>
