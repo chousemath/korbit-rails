@@ -56,7 +56,7 @@
   <% if @recent_transactions.any? %>
     <div lass="row">
       <div class="col-xs-12">
-        <div class="well">Transactions available from <%= DateTime.strptime(@first_transaction.unix_time.to_s, '%s') %> to <%= DateTime.strptime(@last_transaction.unix_time.to_s, '%s') %> (<%= @transaction_count %> total transactions)</div>
+        <div class="well">Transactions available from <%= DateTime.strptime(@first_transaction.unix_time.to_s, '%s').strftime('%F') %> to <%= DateTime.strptime(@last_transaction.unix_time.to_s, '%s').strftime('%F') %> (<%= @transaction_count %> total transactions)</div>
       </div>
     </div>
     <div class="row">
@@ -76,30 +76,20 @@
   <% end %>
 </div>
 
-
-
 <script>
   google.charts.load('current', {'packages':['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
-
-  function korbitToGoogle(korbitData) {
-    return [`${korbitData.start} - ${korbitData.end}`, korbitData.low, korbitData.open, korbitData.close, korbitData.high];
-  }
+      google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
-    var data;
-    $.getJSON('https://raw.githubusercontent.com/chousemath/candlestick-plot/master/data/data.json', function(json) {
-      data = google.visualization.arrayToDataTable(json.map(korbitToGoogle), true);
-    }).done(function() {
-      var options = {
-        legend:'none',
-        hAxis: {title: 'Transaction Interval (Unix Time)',  titleTextStyle: {color: '#333'}},
-        vAxis: {title: 'Transaction Value (Korean Won)',  titleTextStyle: {color: '#333'}},
-        explorer: {axis: 'horizontal', keepInBounds: true},
-        bar: {groupWidth: '90%'}
-      };
-      var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    });
+    var data = google.visualization.arrayToDataTable(<%=raw @recent_transactions %>, true);
+    var options = {
+      legend:'none',
+      hAxis: {title: 'Transaction Interval (Unix Time)',  titleTextStyle: {color: '#333'}, textStyle : { fontSize: 10 }},
+      vAxis: {title: 'Transaction Value (Korean Won)',  titleTextStyle: {color: '#333'}},
+      explorer: {axis: 'horizontal', keepInBounds: true},
+      bar: {groupWidth: '90%'}
+    };
+    var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
   }
 </script>
