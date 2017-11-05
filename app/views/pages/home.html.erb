@@ -16,11 +16,11 @@
 
       <%= form_tag('/', method: 'POST', class: "navbar-form navbar-left") do %>
         <label for="transaction_count">Transaction Count:</label>
-        <div class="form-group" style="margin-right: 15px;">
+        <div class="form-group" class="select-spacing">
           <%= select("data", "transaction_count", @transaction_counts, selected: 50) %>
         </div>
         <label for="time_interval">Time Interval:</label>
-        <div class="form-group">
+        <div class="form-group" class="select-spacing">
           <%= select("data", "time_interval", @time_intervals, selected: @time_interval) %>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
