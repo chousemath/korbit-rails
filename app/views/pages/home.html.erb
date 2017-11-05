@@ -45,11 +45,12 @@
         <div class="well"><b><%= @total_transactions %></b> total transactions</div>
       </div>
     </div>
+
     <div class="row">
       <div class="col-xs-12">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3 class="panel-title">Korbit Transaction Plot</h3>
+            <h3 class="panel-title">Korbit Candlestick Plot</h3>
           </div>
           <div class="panel-body">
             <div class="candlestick-plot-container">
@@ -59,6 +60,7 @@
         </div>
       </div>
     </div>
+
     <div class="row">
       <div class="col-xs-12 col-md-6">
         <div class="well"><span class="bullish-candle">Bullish candle</span>: price increased over the time period.</div>
@@ -66,6 +68,14 @@
 
       <div class="col-xs-12 col-md-6">
         <div class="well"><span class="bearish-candle">Bearish candle</span>: price decreased over the time period.</div>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <div class="well"><span class="average-price">Average price</span></div>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <div class="well"><span class="weighted-average-price">Weight average price</span></div>
       </div>
 
       <div class="col-xs-12 col-md-6">
@@ -92,11 +102,18 @@
       explorer: {axis: 'horizontal', keepInBounds: true},
       bar: {groupWidth: '90%'},
       candlestick: {
-        fallingColor: { strokeWidth: 0, fill: '#d85040' }, // red
-        risingColor: { strokeWidth: 0, fill: '#5286ec' }   // green
+        fallingColor: { strokeWidth: 0, fill: '#d85040' },
+        risingColor: { strokeWidth: 0, fill: '#5286ec' }
+      },
+      seriesType: 'candlesticks',
+      series: {
+        1: { type: 'scatter', color: '#77f38b' },
+        2: { type: 'scatter', color: '#ff9428' }
       }
     };
-    var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
+
+    var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+
     chart.draw(data, options);
   }
 

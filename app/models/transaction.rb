@@ -48,7 +48,7 @@ class Transaction < ApplicationRecord
       start_time = DateTime.strptime(t[:start].to_s, '%s').strftime('%Y%m%dT%H%M')
       end_time = DateTime.strptime(t[:end].to_s, '%s').strftime('%Y%m%dT%H%M')
       # [start_time + ' - ' + end_time, t[:low], t[:open], t[:close], t[:high]]
-      ["#{start_time} - #{end_time}", t[:low], t[:open], t[:close], t[:high]]
+      ["#{start_time} - #{end_time}", t[:low], t[:open], t[:close], t[:high], t[:average].to_i, t[:weighted_average].to_i]
     end
   end
 

@@ -8,6 +8,7 @@ class PagesController < ApplicationController
     @transaction_counts = [*1..199].map { |x| x * 50 }
     transactions = Transaction.last(@transaction_count)
     @recent_transactions = Transaction.candlestick_google(transactions, @time_interval)
+    puts @recent_transactions.inspect
     @first_transaction = Transaction.first
     @last_transaction = transactions.last
     @total_transactions = Transaction.count
