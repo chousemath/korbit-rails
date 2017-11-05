@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  unix_time: MyString
+  value_krw: 1.5
+  value_btc: 1.5
+
+two:
+  unix_time: MyString
+  value_krw: 1.5
+  value_btc: 1.5
