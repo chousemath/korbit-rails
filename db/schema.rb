@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20171105022645) do
   enable_extension "plpgsql"
 
   create_table "transactions", force: :cascade do |t|
-    t.float "unix_time"
+    t.integer "unix_time"
     t.float "value_krw"
     t.float "value_btc"
     t.datetime "created_at", null: false
