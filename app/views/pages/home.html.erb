@@ -15,12 +15,12 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
       <%= form_tag('/', method: 'POST', class: "navbar-form navbar-left") do %>
-        <label for="transaction_count">Transaction Count:</label>
-        <div class="form-group" class="select-spacing">
+        <label for="transaction_count">Transactions:</label>
+        <div class="form-group select-spacing">
           <%= select("data", "transaction_count", @transaction_counts, selected: 50) %>
         </div>
-        <label for="time_interval">Time Interval:</label>
-        <div class="form-group" class="select-spacing">
+        <label for="time_interval">Interval (s):</label>
+        <div class="form-group select-spacing">
           <%= select("data", "time_interval", @time_intervals, selected: @time_interval) %>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -31,10 +31,18 @@
 </nav>
 
 <div class="container">
-  <% if @recent_transactions.any? %>
+    <% flash.each do |key, value| %>
+      <div class="alert alert-<%= key %>"><%= value %></div>
+    <% end %>
+    <% if @recent_transactions.any? %>
     <div class="row">
-      <div class="col-xs-12">
-        <div class="well">Transactions available from <%= DateTime.strptime(@first_transaction.unix_time.to_s, '%s').strftime('%F') %> to <%= DateTime.strptime(@last_transaction.unix_time.to_s, '%s').strftime('%F') %> (<%= @transaction_count %> total transactions)</div>
+      <div class="col-xs-12 col-md-6">
+        <div class="well">
+          Transactions available from <b><%= DateTime.strptime(@first_transaction.unix_time.to_s, '%s').strftime('%F') %></b> to <b><%= DateTime.strptime(@last_transaction.unix_time.to_s, '%s').strftime('%F') %></b>
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <div class="well"><b><%= @total_transactions %></b> total transactions</div>
       </div>
     </div>
     <div class="row">
@@ -51,6 +59,23 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-6">
+        <div class="well"><span class="bullish-candle">Bullish candle</span>: price increased over the time period.</div>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <div class="well"><span class="bearish-candle">Bearish candle</span>: price decreased over the time period.</div>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <div class="well">Doji candle: open and closing prices were more or less the same.</div>
+      </div>
+
+      <div class="col-xs-12 col-md-6">
+        <div class="well">Real body: describes price action with respect to opening and closing prices.</div>
+      </div>
+    </div>
   <% end %>
 </div>
 
@@ -62,12 +87,22 @@
     var data = google.visualization.arrayToDataTable(<%=raw @recent_transactions %>, true);
     var options = {
       legend:'none',
-      hAxis: {title: 'Transaction Interval (Unix Time)',  titleTextStyle: {color: '#333'}, textStyle : { fontSize: 10 }},
-      vAxis: {title: 'Transaction Value (Korean Won)',  titleTextStyle: {color: '#333'}},
+      hAxis: {title: 'Interval (YYYYMMDDHHMM)',  titleTextStyle: {color: '#367890'}, textStyle : { fontSize: 10 }},
+      vAxis: {title: 'Price (Korean Won)',  titleTextStyle: {color: '#367890'}},
       explorer: {axis: 'horizontal', keepInBounds: true},
-      bar: {groupWidth: '90%'}
+      bar: {groupWidth: '90%'},
+      candlestick: {
+        fallingColor: { strokeWidth: 0, fill: '#d85040' }, // red
+        risingColor: { strokeWidth: 0, fill: '#5286ec' }   // green
+      }
     };
     var chart = new google.visualization.CandlestickChart(document.getElementById('chart_div'));
     chart.draw(data, options);
   }
+
+  (function() {
+    setTimeout(function() {
+      $(".alert").hide();
+    }, 3500);
+  })();
 </script>
